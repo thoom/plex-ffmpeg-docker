@@ -11,6 +11,7 @@ jobs:
       - uses: oprypin/find-latest-tag@v1
         with:
           repository: linuxserver/docker-plex
+          releases-only: true
         id: compare-releases
       - uses: mukunku/tag-exists-action@v1.2.0
         id: checkTag
@@ -21,7 +22,7 @@ jobs:
         if: steps.checkTag.outputs.exists == 'false'
         uses: mathieudutour/github-tag-action@v6.1
         with:
-          github_token: ${{ secrets.ACTIONS_PAT }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ steps.compare-releases.outputs.tag }}
           tag_prefix: ''
       - name: Create a GitHub release
@@ -31,4 +32,4 @@ jobs:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: Release ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
-          token: ${{ secrets.ACTIONS_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
