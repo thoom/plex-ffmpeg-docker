@@ -1,0 +1,42 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: oprypin/find-latest-tag@v1
+        with:
+          repository: linuxserver/docker-plex
+        id: plex  # The step ID to refer to later.
+    
+      - uses: actions/checkout@v3
+      
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: thoom
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Build and push plex docker
+        uses: docker/build-push-action@v3
+        with:
+          context: "."
+          push: true
+          tags: thoom/plex-ffmpeg:latest,thoom/plex-ffmpeg:${{ steps.plex.outputs.tag }},ghcr.io/thoom/plex-ffmpeg:latest,ghcr.io/thoom/plex-ffmpeg:${{ steps.plex.outputs.tag }}
+
+      
