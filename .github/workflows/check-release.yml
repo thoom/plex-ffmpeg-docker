@@ -1,4 +1,4 @@
-name: Get latest whois release
+name: Get latest plex release
 on:
   schedule:
     - cron: '0 10 * * *'
