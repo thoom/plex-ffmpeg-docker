@@ -76,7 +76,7 @@ if [ ! -z "$1" ]; then
    echo "Starting Transcoding: Converting to H.265 w/ffmpeg @720p" 
    echo "********************************************************" 
 
-   /ffmpeg/ffmpeg -i "$FILENAME" -s hd720 -c:v libx265 -preset veryfast -vf yadif -ac 2 -strict -2 "$TEMPFILENAME" 
+   ffmpeg -i "$FILENAME" -s hd720 -c:v libx265 -preset veryfast -vf yadif -ac 2 -strict -2 "$TEMPFILENAME" 
    check_errs $? "Failed to convert using ffmepg"
 
    echo "********************************************************" 
