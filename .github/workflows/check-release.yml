@@ -22,7 +22,7 @@ jobs:
         if: steps.checkTag.outputs.exists == 'false'
         uses: mathieudutour/github-tag-action@v6.1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.ACTIONS_PAT }}
           custom_tag: ${{ steps.compare-releases.outputs.tag }}
           tag_prefix: ''
       - name: Create a GitHub release
@@ -32,4 +32,4 @@ jobs:
           tag: ${{ steps.tag_version.outputs.new_tag }}
           name: Release ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ACTIONS_PAT }}
